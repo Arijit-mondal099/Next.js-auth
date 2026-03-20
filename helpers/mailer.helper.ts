@@ -19,7 +19,7 @@ export async function sendEmail({ email, emailType, userId }: Params) {
             },
         })
 
-        const hashedToken = await bcrypt.hash(userId, 10)
+        const hashedToken = await bcrypt.hash(userId.toString(), 10)
 
         switch (emailType) {
             case "VERIFY":

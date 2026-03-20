@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     try {
         const { username, email, password} = await request.json() as Body
 
-        if (!username?.trim() || !email?.trim() || password?.trim()) {
+        if (!username?.trim() || !email?.trim() || !password?.trim()) {
             return NextResponse.json(
                 { success: false, message: "All feilds are requried!" },
                 { status: 400 }
@@ -47,7 +47,8 @@ export async function POST(request: NextRequest) {
             {
                 success: true,
                 message: "User registered successfully",
-                user: newUser
+                user: newUser._id,
+                email: result?.messageId
             },
             { status: 201 }
         )
