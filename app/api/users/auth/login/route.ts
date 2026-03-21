@@ -1,3 +1,4 @@
+import { dbConnection } from "@/lib/db"
 import { User } from "@/models/user.model"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
@@ -15,6 +16,8 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             )
         }
+
+        await dbConnection()
 
         const user = await User.findOne({ email })
 
