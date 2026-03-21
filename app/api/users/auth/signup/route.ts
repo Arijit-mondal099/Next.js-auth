@@ -25,29 +25,39 @@ export async function POST(request: NextRequest) {
 
         const isUserExist = await User.findOne({ email })
 
-        if (isUserExist) {
+        if (isUserExist && isUserExist.isVerified) {
             return NextResponse.json(
-                { success: false, message: "Account alredy exist with creadintials!" },
+                { success: false, message: "Account alredy exist and verified with creadintials!" },
                 { status: 400 }
             )
         }
 
-        const hashPassword = await bcrypt.hash(password, 10)
+        // if user exist dosen't exist then create new user
+        // else user account is exist but not verified yet 
 
-        const newUser = await User.create({
-            username,
-            email,
-            password: hashPassword
-        })
+        let newUser;
+        let userId = isUserExist?._id
 
-        // TODO: Send verification email
-        const result = await sendEmail({ email, emailType: "VERIFY", userId: newUser._id })
+        if (!isUserExist) {
+            const hashPassword = await bcrypt.hash(password, 10)
+    
+            newUser = await User.create({
+                username,
+                email,
+                password: hashPassword
+            })
+
+            userId = newUser._id
+        }
+
+        // Send verification email
+        const result = await sendEmail({ email, emailType: "VERIFY", userId })
 
         return NextResponse.json(
             {
                 success: true,
                 message: "User registered successfully",
-                user: newUser._id,
+                user: userId,
                 email: result?.messageId
             },
             { status: 201 }

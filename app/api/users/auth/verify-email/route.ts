@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
         if (!token?.trim()) {
             return NextResponse.json(
-                { success: false, message: "Faild to verify, please try again!" },
+                { success: false, message: "Faild to verify token not provided, please try again!" },
                 { status: 401 }
             )
         }
@@ -19,8 +19,15 @@ export async function POST(request: NextRequest) {
 
         if (!user) {
             return NextResponse.json(
-                { success: false, message: "Faild to verify, please try again!" },
+                { success: false, message: "Faild to verify token expire, please try again!" },
                 { status: 401 }
+            )
+        }
+
+        if (user && user.isVerified) {
+            return NextResponse.json(
+                { success: false, message: "Account alredy verified!" },
+                { status: 400 }
             )
         }
 
