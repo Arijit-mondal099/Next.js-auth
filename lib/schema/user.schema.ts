@@ -20,5 +20,22 @@ export const UserLoginSechma = z.object({
         .max(16, "Password has to lessthen 16 characters")
 })
 
+export const ForgotPasswordSchema = z.object({
+    email: z.string().lowercase(),
+})
+
+export const ChangePasswordSchema = z.object({
+    password: 
+        z.string()
+        .min(6, "Password must be at least 6 characters")
+        .max(16, "Password has to lessthen 16 characters"),
+    confirmPassword:
+        z.string()
+        .min(6, "Password must be at least 6 characters")
+        .max(16, "Password has to lessthen 16 characters")
+})
+
+export type ChangePasswordData = z.infer<typeof ChangePasswordSchema>
+export type ForgotPasswordData = z.infer<typeof ForgotPasswordSchema>
 export type UserSignupFormData = z.infer<typeof UserSignupSechma>
 export type UserLoginFormData = z.infer<typeof UserLoginSechma>

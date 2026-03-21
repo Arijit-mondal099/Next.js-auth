@@ -28,8 +28,8 @@ export async function sendEmail({ email, emailType, userId }: Params) {
                 })
                 break;
             case "FORGOT_PASSWORD": 
-                await User.findByIdAndUpdate(userId, { $set: 
-                    { forgotPasswordToken: hashedToken, forgotPasswordTokenExpiry: Date.now() + 1800000 }
+                await User.findByIdAndUpdate(userId, { 
+                    $set: { forgotPasswordToken: hashedToken, forgotPasswordTokenExpiry: Date.now() + 1800000 }
                 })
                 break;
         }
@@ -40,8 +40,8 @@ export async function sendEmail({ email, emailType, userId }: Params) {
             subject: emailType === "VERIFY" ? "Verify your email" : "Reset your password",
             html: `<p>
                         Click Here 👉🏾 
-                        <a href="${process.env.DOMAIN}/verify?token=${hashedToken}">
-                            ${process.env.DOMAIN}/verify?token=${hashedToken}
+                        <a href="${process.env.DOMAIN}/${emailType === "VERIFY" ? "verify" : "verify-password"}?token=${hashedToken}">
+                            ${process.env.DOMAIN}/${emailType === "VERIFY" ? "verify" : "verify-password"}?token=${hashedToken}
                         </a> 
                         to ${emailType === "VERIFY" ? "verify your email" : "forgot password"}
                    </p>`

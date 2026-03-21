@@ -65,8 +65,9 @@ export default function Login() {
             </form>
           </CardContent>
 
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-2">
             <p>Don&apos;t have an account <Link href="/signup" className="text-blue-500">Signup</Link></p>
+            <Link href="/forgot-password" className="text-blue-500">Forgot password</Link>
           </CardFooter>
         </Card>
       </div>
